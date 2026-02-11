@@ -2,7 +2,7 @@
 
 Скрипты для работы с одним или несколькими кластерами. Только **чтение** (get/list); подходят для ролей с ограниченным доступом.
 
-**Скрипты:** [../scripts/kubernetes/](../scripts/kubernetes/)
+**Скрипты:** [../scripts/kubernetes/](../scripts/kubernetes/) · **Справочник команд:** [kubernetes-commands.md](kubernetes-commands.md)
 
 ---
 
