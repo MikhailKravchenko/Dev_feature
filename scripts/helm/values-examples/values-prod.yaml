@@ -1,0 +1,31 @@
+# Пример values для окружения prod.
+# Больше реплик, увеличенные ресурсы и лимиты, продакшен-настройки.
+
+replicaCount: 3
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: app.example.com
+      paths: ["/"]
+
+env:
+  - name: LOG_LEVEL
+    value: "warn"
+
+# Типичные продакшен-опции (зависит от чарта)
+# autoscaling:
+#   enabled: true
+#   minReplicas: 3
+#   maxReplicas: 10

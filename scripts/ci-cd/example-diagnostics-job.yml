@@ -1,0 +1,26 @@
+# Пример: job для запуска скриптов диагностики с сохранением отчётов в артефакты.
+# Подключение в .gitlab-ci.yml: include: - local: scripts/ci-cd/example-diagnostics-job.yml
+# Либо скопируйте содержимое в свой pipeline.
+
+diagnostics:
+  stage: .post  # или свой stage, например "report"
+  image: python:3.11-slim
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq procps iproute2 2>/dev/null || true
+    - pip install --quiet --break-system-packages 2>/dev/null || true
+  script:
+    - echo "=== Сводка по системе ==="
+    - python3 scripts/system/system_summary.py 2>&1 | tee report-system.txt
+    - echo "=== Слушающие порты ==="
+    - python3 scripts/network/network_checks.py --ports 2>&1 | tee report-ports.txt
+    - echo "=== Failed systemd ==="
+    - python3 scripts/system/systemd_services.py --failed 2>&1 | tee report-systemd.txt || true
+  artifacts:
+    when: always
+    paths:
+      - report-*.txt
+    expire_in: 7 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $DIAGNOSTICS_JOB == "true"

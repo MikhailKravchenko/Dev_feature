@@ -1,0 +1,25 @@
+# Пример values для окружения stage (preprod).
+# Средние по размеру реплики и ресурсы, ingress для тестирования.
+
+replicaCount: 2
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+ingress:
+  enabled: true
+  hosts:
+    - host: app.stage.example.com
+      paths: ["/"]
+
+env:
+  - name: LOG_LEVEL
+    value: "info"

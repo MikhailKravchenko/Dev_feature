@@ -1,0 +1,28 @@
+# Пример values для окружения dev.
+# Отличия: минимум реплик, меньшие ресурсы, часто отключён ingress или упрощён.
+
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# В dev часто один инстанс, без ingress или с простым
+ingress:
+  enabled: false
+#  enabled: true
+#  hosts:
+#    - host: app.dev.example.com
+#      paths: ["/"]
+
+# Отладочные/упрощённые настройки
+env:
+  - name: LOG_LEVEL
+    value: "debug"
