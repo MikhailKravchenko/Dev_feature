@@ -75,70 +75,70 @@
 
 ---
 
-### 3. Восстановление из бэкапов
+### 3. Восстановление из бэкапов ✅
 
 | # | Скрипт / раздел | Описание | Язык |
 |---|-----------------|----------|------|
-| 3.1 | PostgreSQL | restore из custom/directory format, проверка | Python/Bash |
-| 3.2 | MySQL / MariaDB | Восстановление из dump | Python/Bash |
-| 3.3 | MongoDB | mongorestore | Python/Bash |
-| 3.4 | Redis | Подмена RDB, перезапуск | Bash |
+| 3.1 | PostgreSQL | restore из custom/directory format, --create-db, --clean | Python |
+| 3.2 | MySQL / MariaDB | Восстановление из .sql / .sql.gz (stdin) | Python |
+| 3.3 | MongoDB | mongorestore, --drop, --gzip | Python |
+| 3.4 | Redis | Подмена RDB, опционально перезапуск (--restart) | Bash |
 
-**Документ:** [docs/restore.md](docs/restore.md)
+**Папка:** [scripts/restore/](scripts/restore/) · **Документ:** [docs/restore.md](docs/restore.md)
 
 ---
 
-### 4. Kubernetes (несколько кластеров)
+### 4. Kubernetes (несколько кластеров) ✅
 
 Скрипты в том числе с **ограниченным доступом** (read-only).
 
 | # | Скрипт / раздел | Описание | Язык |
 |---|-----------------|----------|------|
-| 4.1 | Здоровье кластера | Ноды, поды, события, недавние рестарты | Python/Bash |
-| 4.2 | Сводка по ресурсам | Requests/limits, использование по namespace | Python |
-| 4.3 | Образы без тега / latest | Поиск по кластеру или namespace | Python/Bash |
-| 4.4 | Read-only проверки | Только чтение (get, list), без изменений | Python/Bash |
-| 4.5 | Мульти-кластер | Переключение контекста, проверка нескольких кластеров | Bash/Python |
+| 4.1 | Здоровье кластера | Ноды, поды, события, поды с рестартами | Python |
+| 4.2 | Сводка по ресурсам | Requests/limits по namespace, опционально kubectl top | Python |
+| 4.3 | Образы без тега / latest | Поиск подов с :latest или без тега | Python |
+| 4.4 | Read-only проверки | Только get/list (k8s_readonly.py) | Python |
+| 4.5 | Мульти-кластер | Список контекстов, --run-health по каждому | Python |
 
-**Документ:** [docs/kubernetes.md](docs/kubernetes.md)
+**Папка:** [scripts/kubernetes/](scripts/kubernetes/) · **Документ:** [docs/kubernetes.md](docs/kubernetes.md)
 
 ---
 
-### 5. Argo CD
+### 5. Argo CD ✅
 
 | # | Скрипт / раздел | Описание | Язык |
 |---|-----------------|----------|------|
-| 5.1 | Список приложений и статус | Sync/Health по всем приложениям | Python/Bash |
-| 5.2 | Out-of-sync и ошибки | Поиск приложений с расхождениями или ошибками | Python/Bash |
+| 5.1 | Список приложений и статус | Sync/Health по всем приложениям (argocd_apps_list.py) | Python |
+| 5.2 | Out-of-sync и ошибки | Поиск приложений с расхождениями или ошибками (argocd_apps_problems.py) | Python |
 
-**Документ:** [docs/argocd.md](docs/argocd.md)
+**Папка:** [scripts/argocd/](scripts/argocd/) · **Документ:** [docs/argocd.md](docs/argocd.md)
 
 ---
 
-### 6. Helm
+### 6. Helm ✅
 
 | # | Скрипт / раздел | Описание | Язык |
 |---|-----------------|----------|------|
-| 6.1 | Валидация чартов | helm lint для выбранных чартов | Bash |
-| 6.2 | Diff перед upgrade | Сравнение текущего состояния с чартом | Bash |
-| 6.3 | Шаблоны values | Примеры values для dev/stage/prod | YAML + описание в docs |
+| 6.1 | Валидация чартов | helm lint для текущего каталога или указанных чартов (helm_lint.sh) | Bash |
+| 6.2 | Diff перед upgrade | helm diff upgrade с --namespace, --values (helm_diff.sh, плагин helm-diff) | Bash |
+| 6.3 | Шаблоны values | Примеры values-dev/stage/prod в values-examples/ | YAML |
 
-**Документ:** [docs/helm.md](docs/helm.md)
+**Папка:** [scripts/helm/](scripts/helm/) · **Документ:** [docs/helm.md](docs/helm.md)
 
 ---
 
-### 7. GitLab CI/CD
+### 7. GitLab CI/CD ✅
 
 Без связи с мониторингом — только пайплайны и примеры jobs.
 
 | # | Раздел | Описание |
 |---|--------|----------|
-| 7.1 | Запуск диагностики | Job для запуска скриптов диагностики (артефакты отчётов) |
-| 7.2 | Бэкапы по расписанию | Scheduled pipeline для бэкапов СУБД |
-| 7.3 | Деплой через Helm | Пример deploy job (dev/stage/prod) |
-| 7.4 | Snippets | Переиспользуемые фрагменты .gitlab-ci.yml с комментариями |
+| 7.1 | Запуск диагностики | example-diagnostics-job.yml: отчёты в артефактах (report-*.txt) |
+| 7.2 | Бэкапы по расписанию | example-backup-scheduled.yml: PostgreSQL (и пример MySQL) по schedule |
+| 7.3 | Деплой через Helm | example-helm-deploy.yml: dev/stage/production, values по окружению |
+| 7.4 | Snippets | snippets/: run-python, artifacts, scheduled job, helm upgrade, секреты |
 
-**Документ:** [docs/cicd-gitlab.md](docs/cicd-gitlab.md)
+**Папка:** [scripts/ci-cd/](scripts/ci-cd/) · **Документ:** [docs/cicd-gitlab.md](docs/cicd-gitlab.md)
 
 ---
 
@@ -173,4 +173,3 @@
 3. Запускать скрипты локально или из GitLab CI по необходимости.
 4. Адаптировать пути, учётные данные и расписания под своё окружение (учётные данные — через переменные окружения или секреты CI, не в коде).
 
-Дальше — поэтапная реализация по разделам плана.

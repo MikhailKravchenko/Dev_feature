@@ -1,0 +1,47 @@
+# Пример: deploy через Helm для окружений dev / stage / prod.
+# Окружения настраиваются в GitLab: Deployments -> Environments (dev, stage, production).
+# Секреты: KUBECONFIG или KUBE_TOKEN — в CI/CD Variables (masked/file).
+# Подключение: include: - local: scripts/ci-cd/example-helm-deploy.yml
+
+.helm_deploy: &helm_deploy
+  stage: deploy
+  image:
+    name: alpine/helm:latest
+    entrypoint: [""]
+  before_script:
+    - helm version
+  script:
+    - helm upgrade --install "$RELEASE_NAME" "$CHART_PATH" -n "$NAMESPACE" -f "$VALUES_FILE" --set image.tag="$CI_COMMIT_SHORT_SHA" --wait
+  rules:
+    - if: $CI_COMMIT_BRANCH == $DEPLOY_BRANCH
+
+deploy:dev:
+  <<: *helm_deploy
+  environment: dev
+  variables:
+    DEPLOY_BRANCH: "develop"
+    RELEASE_NAME: "myapp"
+    CHART_PATH: "./chart"
+    NAMESPACE: "dev"
+    VALUES_FILE: "scripts/helm/values-examples/values-dev.yaml"
+
+deploy:stage:
+  <<: *helm_deploy
+  environment: stage
+  # Настройте правило под свою ветку (например release/* через rules)
+  variables:
+    DEPLOY_BRANCH: "release"
+    RELEASE_NAME: "myapp"
+    CHART_PATH: "./chart"
+    NAMESPACE: "stage"
+    VALUES_FILE: "scripts/helm/values-examples/values-stage.yaml"
+
+deploy:production:
+  <<: *helm_deploy
+  environment: production
+  variables:
+    DEPLOY_BRANCH: "main"
+    RELEASE_NAME: "myapp"
+    CHART_PATH: "./chart"
+    NAMESPACE: "production"
+    VALUES_FILE: "scripts/helm/values-examples/values-prod.yaml"

@@ -1,0 +1,37 @@
+# Пример: scheduled pipeline для бэкапа СУБД (PostgreSQL).
+# В GitLab: CI/CD -> Schedules — создайте расписание (например cron: 0 2 * * * для 02:00 ежедневно).
+# Секреты: PGPASSWORD, PGHOST и т.д. задайте в CI/CD Variables (masked).
+# Подключение: include: - local: scripts/ci-cd/example-backup-scheduled.yml
+
+.backup_template: &backup_template
+  stage: backup
+  image: python:3.11-slim
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq postgresql-client 2>/dev/null || true
+  script:
+    - python3 scripts/backup/backup_postgres.py --dest "$BACKUP_DEST" --database "$PG_DATABASE" --rotate-days 7
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+
+backup-postgres:
+  <<: *backup_template
+  variables:
+    BACKUP_DEST: "${CI_PROJECT_DIR}/backups/pg"
+    PG_DATABASE: "mydb"
+  # Опционально: артефакты не храним (бэкапы обычно на внешнее хранилище или runner)
+  # artifacts:
+  #   paths: [backups/]
+  #   expire_in: 1 day
+
+# Пример для MySQL (раскомментируйте и настройте):
+# backup-mysql:
+#   stage: backup
+#   image: python:3.11-slim
+#   before_script:
+#     - apt-get update -qq && apt-get install -y -qq default-mysql-client 2>/dev/null || true
+#   script:
+#     - python3 scripts/backup/backup_mysql.py --dest "$BACKUP_DEST" --all-databases --rotate-days 7
+#   variables:
+#     BACKUP_DEST: "${CI_PROJECT_DIR}/backups/mysql"
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "schedule"
