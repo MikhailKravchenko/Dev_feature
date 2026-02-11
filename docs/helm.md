@@ -2,7 +2,7 @@
 
 Валидация чартов, сравнение с кластером перед upgrade, шаблоны values по окружениям.
 
-**Скрипты и примеры:** [../scripts/helm/](../scripts/helm/)
+**Скрипты и примеры:** [../scripts/helm/](../scripts/helm/) · **Справочник команд:** [helm-commands.md](helm-commands.md)
 
 ---
 

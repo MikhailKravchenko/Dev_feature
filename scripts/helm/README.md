@@ -34,4 +34,4 @@ helm upgrade --install myapp ./chart -f values-examples/values-prod.yaml -n prod
 
 Переменная **HELM** — путь к helm (по умолчанию `helm`).
 
-**Документация:** [../../docs/helm.md](../../docs/helm.md)
+**Документация:** [../../docs/helm.md](../../docs/helm.md) · **Справочник команд helm:** [../../docs/helm-commands.md](../../docs/helm-commands.md)

@@ -39,4 +39,4 @@ python3 k8s_multi_cluster.py --contexts dev,prod --run-health
 
 Переменные: `KUBECONFIG`, `KUBECTL` (путь к kubectl).
 
-**Документация:** [../../docs/kubernetes.md](../../docs/kubernetes.md)
+**Документация:** [../../docs/kubernetes.md](../../docs/kubernetes.md) · **Справочник команд kubectl:** [../../docs/kubernetes-commands.md](../../docs/kubernetes-commands.md)

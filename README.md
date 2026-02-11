@@ -150,9 +150,9 @@
 | Бэкапы СУБД | [scripts/backup/](scripts/backup/) | [docs/backups.md](docs/backups.md) |
 | Troubleshooting СУБД | [scripts/database/](scripts/database/) | [docs/database-troubleshooting.md](docs/database-troubleshooting.md) |
 | Восстановление | [scripts/restore/](scripts/restore/) | [docs/restore.md](docs/restore.md) |
-| Kubernetes | [scripts/kubernetes/](scripts/kubernetes/) | [docs/kubernetes.md](docs/kubernetes.md) |
+| Kubernetes | [scripts/kubernetes/](scripts/kubernetes/) | [docs/kubernetes.md](docs/kubernetes.md), [справочник команд](docs/kubernetes-commands.md) |
 | Argo CD | [scripts/argocd/](scripts/argocd/) | [docs/argocd.md](docs/argocd.md) |
-| Helm | [scripts/helm/](scripts/helm/) | [docs/helm.md](docs/helm.md) |
+| Helm | [scripts/helm/](scripts/helm/) | [docs/helm.md](docs/helm.md), [справочник команд](docs/helm-commands.md) |
 | GitLab CI/CD | [scripts/ci-cd/](scripts/ci-cd/) | [docs/cicd-gitlab.md](docs/cicd-gitlab.md) |
 
 ---
